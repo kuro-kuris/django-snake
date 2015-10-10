@@ -4,11 +4,12 @@ import pprint
 import json
 import urllib.request
 import os
+import datetime
 
 RBS_OBP_CLIENT_KEY = os.environ.get('RBS_OBP_CLIENT_KEY')
 RBS_OBP_CLIENT_SECRET = os.environ.get('RBS_OBP_CLIENT_SECRET')
 
-
+print(datetime.datetime.today())
 # initialise parameters
 # client key and secret are tied into which base url
 # you are using in the examples we are using the base_url for rbs
@@ -40,11 +41,21 @@ our_bank = 'rbs-rbs-c'
 print("Available accounts")
 r = openbank.get(u"{}/obp/v1.4.0/banks/{}/accounts/private".format(base_url, our_bank))
 
+
+acc_infos = []
 accounts = r.json()['accounts']
 for a in accounts:
-    print(a['id'])
-    print(a["label"])
+    parsed_acc_details = {}
+    #print(a['id'])
+    #print(a["label"])
+    parsed_acc_details["id"] = a["id"]
+    parsed_acc_details["label"] = a["label"]
+    acc_infos.append(parsed_acc_details)
+for elem in acc_infos:
+    print(elem)
+
 our_account = accounts[0]['id']
+
 
 
 r = openbank.get(u"{}/obp/v1.4.0/banks/{}/accounts/{}/owner/transactions".format(base_url, 
