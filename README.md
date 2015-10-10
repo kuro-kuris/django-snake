@@ -1,7 +1,7 @@
 # django-snake
 django snake
 
-Setup on ubuntu:
+## Setup on ubuntu:
 
 virtualenv -p python3 venv
 Activate venv:
