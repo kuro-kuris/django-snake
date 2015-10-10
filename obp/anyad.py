@@ -89,6 +89,20 @@ for trans in transactions["transactions"]:
     parsed_data["transaction_value"] = trans["details"]["value"]["amount"]
     trans_infos.append(parsed_data)
 
-#print(trans_infos)
+'''
+Find the transactions from the past 7 days
+Calculate the overall budget for these transactions
+'''
+#week_spending = []
+week_budget = 0
 for elem in trans_infos:
-    print(elem["transaction_posted"] > (real_current_date - datetime.timedelta(days = 7)))
+    is_from_last_7_days = elem["transaction_posted"] > (real_current_date - datetime.timedelta(days = 7))
+    #print(elem["transaction_posted"] > (real_current_date - datetime.timedelta(days = 7)))
+    if (is_from_last_7_days):
+        #week_spending.append(float(elem["transaction_value"]))
+        week_budget = week_budget + float(elem["transaction_value"])
+
+#for num in week_spending:
+#    print(num)
+print(week_budget)
+
