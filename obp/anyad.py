@@ -9,7 +9,6 @@ import datetime
 RBS_OBP_CLIENT_KEY = os.environ.get('RBS_OBP_CLIENT_KEY')
 RBS_OBP_CLIENT_SECRET = os.environ.get('RBS_OBP_CLIENT_SECRET')
 
-print(datetime.datetime.today())
 # initialise parameters
 # client key and secret are tied into which base url
 # you are using in the examples we are using the base_url for rbs
@@ -35,6 +34,17 @@ redirect_response = input('Paste the full redirect URL here:')
 
 openbank.parse_authorization_response(redirect_response)
 openbank.fetch_access_token(access_token_url)
+
+
+'''
+Calculate current date, and date one week ago
+'''
+current_date = datetime.datetime.today()
+current_date_str = (str(current_date)).partition(" ")[0]
+real_current_date = datetime.datetime.strptime(current_date_str, "%Y-%m-%d")
+
+
+
 
 #get the bank accounts of the user
 our_bank = 'rbs-rbs-c'
@@ -74,11 +84,11 @@ for trans in transactions["transactions"]:
     parsed_data["other_acc_id"] = trans["other_account"]["id"]
     parsed_data["other_acc_holder_name"] = trans["other_account"]["holder"]["name"]
     parsed_data["transaction_type"] = trans["details"]["type"]
-    parsed_data["transaction_posted"] = trans["details"]["posted"]
+    parsed_data["transaction_posted"] = datetime.datetime.strptime(((trans["details"]["posted"]).partition("T")[0]), "%Y-%m-%d")
     parsed_data["transaction_completed"] = trans["details"]["completed"]
     parsed_data["transaction_value"] = trans["details"]["value"]["amount"]
     trans_infos.append(parsed_data)
 
 #print(trans_infos)
 for elem in trans_infos:
-    print(elem["transaction_value"])
+    print(elem["transaction_posted"] > (real_current_date - datetime.timedelta(days = 7)))
