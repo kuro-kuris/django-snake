@@ -30,6 +30,8 @@ export RBS_OBP_CLIENT_KEY
 RBS_OBP_CLIENT_SECRET='yourvalue'
 export RBS_OBP_CLIENT_SECRET
 ```
+Recommend adding these 4 lines to your ~/.bashrc file and reloading it with source so you will keep the env variables between shell sessions.
+
 
 Check if they work:
 ```
