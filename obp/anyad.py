@@ -54,6 +54,7 @@ r = openbank.get(u"{}/obp/v1.4.0/banks/{}/accounts/private".format(base_url, our
 
 acc_infos = []
 accounts = r.json()['accounts']
+'''
 for a in accounts:
     parsed_acc_details = {}
     #print(a['id'])
@@ -63,6 +64,11 @@ for a in accounts:
     acc_infos.append(parsed_acc_details)
 for elem in acc_infos:
     print(elem)
+'''
+for a in accounts:
+    acc_infos.append(a["id"])
+    acc_infos.append(a["label"])
+
 
 our_account = accounts[0]['id']
 
@@ -91,7 +97,7 @@ for trans in transactions["transactions"]:
 
 '''
 Find the transactions from the past 7 days
-Calculate the overall budget for these transactions
+Calculate the overall budget for Direct Debit transactions in this interval
 '''
 #week_spending = []
 week_budget = 0
@@ -100,7 +106,11 @@ for elem in trans_infos:
     #print(elem["transaction_posted"] > (real_current_date - datetime.timedelta(days = 7)))
     if (is_from_last_7_days):
         #week_spending.append(float(elem["transaction_value"]))
-        week_budget = week_budget + float(elem["transaction_value"])
+        if (elem["transaction_type"] == "Direct Debit"):
+            week_budget = week_budget + float(elem["transaction_value"])
+        elif (elem["other_acc_id"] in acc_infos):
+            if("savings" in (acc_infos[acc_infos.index(elem["other_acc_id"]) + 1]).lower()):
+                print("lofaszgeci")
 
 #for num in week_spending:
 #    print(num)
